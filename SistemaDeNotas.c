@@ -1,10 +1,14 @@
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
+//Importa bibliotecas padrão para entrada/saída, manipulação de strings e funções de caracteres.
 
 #define MAX_ALUNOS 100
 #define NUM_NOTAS 3
+//Define constantes para o número máximo de alunos e o número de notas por aluno.
 
+
+//Função para cadastrar um aluno e suas notas.
 void cadastrarAluno(char nomes[][MAX_ALUNOS], float notas[][NUM_NOTAS], int *quantidade) {
   printf("=====================\n");
   printf("Cadastro de Aluno\n");
@@ -12,6 +16,7 @@ void cadastrarAluno(char nomes[][MAX_ALUNOS], float notas[][NUM_NOTAS], int *qua
   printf("Digite o nome do aluno: ");
   scanf(" %[^\n]", nomes[*quantidade]);
 
+  //loop repete até que o usuário insira notas válidas (entre 0 e 10) para as três notas do aluno.
 while (1){
   printf("-------------------------\n");
   
@@ -32,21 +37,26 @@ while (1){
       notas[*quantidade][2] <= 10) {
     
     break;
-
+//faz a verificação se as notas estão dentro do intervalo válido (0 a 10). Se todas as notas forem válidas, o loop é interrompido com o comando break. Se não, cai no else.
   } else {
     printf("Notas inválidas. Digite novamente.\n");
   }
 }
 (*quantidade)++;
+  //incrementa a quantidade de alunos cadastrados.
   printf("Aluno cadastrado com sucesso!\n");
 }
 
+
+//função para listar os alunos cadastrados e suas notas. 
 void listarAlunos(char nomes[][MAX_ALUNOS], float notas[][NUM_NOTAS], int quantidade) {
   if (quantidade == 0) {
     printf("Nenhum aluno cadastrado.\n");
     return;
   }
+//verifica se há alunos cadastrados. Se não houver, exibe uma mensagem e retorna da função.
 
+//percorre o vetor de nomes e notas, exibindo o nome do aluno e suas três notas formatadas com duas casas decimais.
   printf("====================\n");
   printf("Alunos cadastrados:\n");
   printf("====================\n");
@@ -61,6 +71,7 @@ float calcularMedia(float notas[][NUM_NOTAS], int quantidade) {
     return 0;
   }
 
+  //Soma a as notas de todos os alunos e calcula a média da turma.
   float soma = 0;
   int quantidadeNotas = 0;
   for (int i = 0; i < quantidade; i++) {
@@ -76,6 +87,8 @@ float calcularMedia(float notas[][NUM_NOTAS], int quantidade) {
   return media;
 }
 
+
+//função para listar os alunos aprovados (média >= 7).
 void listarAprovados(char nomes[][MAX_ALUNOS], float notas[][NUM_NOTAS], int quantidade) {
   if (quantidade == 0) {
     printf("Nenhum aluno cadastrado.\n");
@@ -85,6 +98,7 @@ void listarAprovados(char nomes[][MAX_ALUNOS], float notas[][NUM_NOTAS], int qua
   printf("====================\n");
   printf("Alunos aprovados:\n");
   printf("====================\n");
+  //percorre o vetor de nomes e notas, calculando a média de cada aluno. Se a média for maior ou igual a 7, o aluno é considerado aprovado e seu nome e média são exibidos.
   int quantidadeAprovados = 0;
   for (int i = 0; i < quantidade; i++){
     float soma = 0;
@@ -103,7 +117,10 @@ void listarAprovados(char nomes[][MAX_ALUNOS], float notas[][NUM_NOTAS], int qua
   }
 }
 
+
+//função recursiva para contar a quantidade de alunos aprovados (média >= 7).
 int contarAprovadosRecursivo(float notas[][NUM_NOTAS], int quantidade, int indice) {
+  //caso base: se o índice atingir a quantidade de alunos, retorna 0.
   if (indice == quantidade) {
     return 0;
   }
@@ -117,8 +134,10 @@ int contarAprovadosRecursivo(float notas[][NUM_NOTAS], int quantidade, int indic
   } else {
     return contarAprovadosRecursivo(notas, quantidade, indice + 1);
   }
-}
+} //A função percorre o vetor de notas recursivamente, calculando a média de cada aluno e contando quantos estão aprovados.
 
+
+//função para buscar um aluno pelo nome usando busca sequencial.
 int buscaSequencial(char nomes[][MAX_ALUNOS], float notas[][NUM_NOTAS], int quantidade) {
   char nomeBusca[MAX_ALUNOS];
   printf("--------------------\n");
@@ -126,6 +145,7 @@ int buscaSequencial(char nomes[][MAX_ALUNOS], float notas[][NUM_NOTAS], int quan
   scanf("%s", nomeBusca);
   printf("--------------------\n");
   for (int i = 0; i < quantidade; i++) {
+    //compara o nome buscado com os nomes registrados por meio da função strcmp.
     if (strcmp(nomes[i], nomeBusca) == 0) {
       printf("Aluno encontrado: %s - Notas: %.2f, %.2f, %.2f\n", nomes[i], notas[i][0], notas[i][1], notas[i][2]);
       return i;
@@ -135,7 +155,10 @@ int buscaSequencial(char nomes[][MAX_ALUNOS], float notas[][NUM_NOTAS], int quan
   return -1;
 }
 
+
+//função recursiva para somar todas as notas dos alunos.
 float somarNotasRecursiva(float notas[][NUM_NOTAS], int quantidade, int indice) {
+  //caso base: se o índice atingir a quantidade de alunos, retorna 0.
   if (indice == quantidade) {
     return 0;
     }
@@ -147,6 +170,8 @@ float somarNotasRecursiva(float notas[][NUM_NOTAS], int quantidade, int indice) 
       somarNotasRecursiva(notas,quantidade,indice + 1);
 }
 
+
+//função para exibir estatísticas da turma, incluindo soma das notas, média, percentual de aprovados e quantidade de aprovados.
 void estatisticas(float notas[][NUM_NOTAS], int quantidade) {
   if (quantidade == 0) {
     printf("Nenhuma nota registrada.\n");
@@ -168,6 +193,8 @@ void estatisticas(float notas[][NUM_NOTAS], int quantidade) {
   printf("Quantidade de alunos aprovados: %d\n", aprovados);
 }
 
+
+//função para calcular e exibir a média de cada aluno individualmente.
 void mediaPorAluno(float notas[][NUM_NOTAS], char nomes[][100], int quantidade) {
   if (quantidade == 0) {
     printf("Nenhum aluno cadastrado.\n");
@@ -177,6 +204,7 @@ void mediaPorAluno(float notas[][NUM_NOTAS], char nomes[][100], int quantidade) 
   printf("====================\n");
   printf("Média por aluno:\n");
   printf("====================\n");
+  //percorre o vetor de nomes e notas, calculando a média de cada aluno e exibindo o resultado.
   for (int i = 0; i < quantidade; i++) {
     float soma = 0;
     for (int j = 0; j < NUM_NOTAS; j++) {
@@ -187,6 +215,8 @@ void mediaPorAluno(float notas[][NUM_NOTAS], char nomes[][100], int quantidade) 
   }
 }
 
+
+//função para exibir um submenu com funcionalidades extras.
 void funcionalidadesExtras(char nomes[][100],float notas[][NUM_NOTAS],int quantidade) {
   char opcao2[10];
   while (1) {
@@ -202,18 +232,20 @@ void funcionalidadesExtras(char nomes[][100],float notas[][NUM_NOTAS],int quanti
 
     printf("Escolha uma opcao: ");
     scanf("%s", opcao2);
+
+  //converte a opção digitada para minúsculas para facilitar a comparação.
   for (int i = 0; opcao2[i] != '\0'; i++) {
     opcao2[i] = tolower(opcao2[i]);
     }
+
   if (strcmp(opcao2, "s1") == 0) {
   buscaSequencial(nomes,notas,quantidade);
-  } else 
-  if (strcmp(opcao2, "s2") == 0) {
+  } else if (strcmp(opcao2, "s2") == 0) {
     estatisticas(notas,quantidade);
-  } else 
-  if (strcmp(opcao2, "s3") == 0) {
+  } else if (strcmp(opcao2, "s3") == 0) {
     int aprovados = contarAprovadosRecursivo(notas,quantidade,0);
-
+  
+  //exibe a quantidade de alunos aprovados.
   printf("--------------------\n");
   printf("Quantidade de aprovados: %d\n",aprovados);
   } else 
@@ -228,6 +260,8 @@ void funcionalidadesExtras(char nomes[][100],float notas[][NUM_NOTAS],int quanti
   }
 }
 
+
+//função principal do programa, que exibe o menu principal e chama as funções correspondentes com base na escolha do usuário.
 int main() {
   char nomes[MAX_ALUNOS][100];
   float notas[MAX_ALUNOS][NUM_NOTAS];
@@ -253,20 +287,15 @@ int main() {
         } else {
           printf("Limite de alunos atingido.\n");
         }
-        } else 
-        if (opcao == 2) {
+        } else if (opcao == 2) {
             listarAlunos(nomes,notas,quantidade);
-        } else 
-        if (opcao == 3) {
+        } else if (opcao == 3) {
           calcularMedia(notas,quantidade);
-        } else 
-        if (opcao == 4) {
+        } else if (opcao == 4) {
           listarAprovados(nomes,notas,quantidade);
-        } else 
-        if (opcao == 5) {
+        } else if (opcao == 5) {
           funcionalidadesExtras(nomes,notas,quantidade);
-        } else 
-        if (opcao == 0) {
+        } else if (opcao == 0) {
           printf("Saindo do sistema...\n");
           break;
         } else {
